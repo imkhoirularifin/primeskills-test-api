@@ -4,10 +4,57 @@ Simple Todo App API built with Golang and Gin.
 
 ## Table of Contents
 
+- [Project structure](#project-structure)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Running the Application](#running-the-application)
 - [Documentation](#documentation)
+
+## Project Structure
+
+```bash
+.
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml
+│       └── migrate.yml
+├── docs/
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
+├── internal/
+│   ├── config/
+│   │   └── config.go
+│   ├── dto/
+│   │   └── user.dto.go
+│   ├── entity/
+│   │   └── user.entity.go
+│   ├── infrastructure/
+│   │   ├── container.go
+│   │   ├── gin.go
+│   │   └── gorm.go
+│   ├── interfaces/
+│   │   └── user.go
+│   ├── middleware/
+│   │   └── auth.go
+│   ├── user/
+│   │   ├── user.controller.go
+│   │   ├── user.repository.go
+│   │   └── user.service.go
+│   └── utilities/
+│       └── validation.go
+├── migrations/
+│   └── sql_migration.sql
+├── pkg/
+│   └── xlogger/
+│       └── xlogger.go
+├── main.go
+├── docker-compose.yml
+├── Dockerfile
+├── .gitignore
+├── go.mod
+└── go.sum
+```
 
 ## Installation
 
