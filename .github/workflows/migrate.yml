@@ -1,0 +1,29 @@
+name: Database Migration
+
+on:
+  pull_request:
+    paths:
+      - migrations/** # Run when migrations are added
+    branches:
+      - master
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go and install Goose
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.23
+      - run: go install github.com/pressly/goose/v3/cmd/goose@latest
+
+      - name: Run Migrations
+        run: goose up
+        env:
+          GOOSE_DRIVER: mysql
+          GOOSE_DBSTRING: root:${{ secrets.DATABASE_PASSWORD }}@tcp(${{secrets.SERVER_IP}}:3306)/primeskills_db
+          GOOSE_MIGRATION_DIR: ./migrations
