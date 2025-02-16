@@ -1,0 +1,403 @@
+basePath: /api/v1
+consumes:
+- application/json
+definitions:
+  dto.CreateTaskDto:
+    properties:
+      description:
+        maxLength: 255
+        type: string
+      taskListId:
+        type: string
+      title:
+        maxLength: 255
+        minLength: 3
+        type: string
+    required:
+    - taskListId
+    - title
+    type: object
+  dto.CreateTaskListDto:
+    properties:
+      title:
+        maxLength: 255
+        minLength: 3
+        type: string
+    required:
+    - title
+    type: object
+  dto.LoginDto:
+    properties:
+      email:
+        type: string
+      password:
+        maxLength: 100
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.RegisterDto:
+    properties:
+      email:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 3
+        type: string
+      password:
+        maxLength: 100
+        minLength: 6
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  dto.ResponseDto:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+  dto.TaskDto:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      isCompleted:
+        type: boolean
+      taskListId:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  dto.TaskListDto:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      tasks:
+        items:
+          $ref: '#/definitions/dto.TaskDto'
+        type: array
+      title:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: string
+    type: object
+  dto.TokenDto:
+    properties:
+      token:
+        type: string
+    type: object
+  dto.UpdateTaskDto:
+    properties:
+      description:
+        maxLength: 255
+        type: string
+      isCompleted:
+        type: boolean
+      title:
+        maxLength: 255
+        minLength: 3
+        type: string
+    required:
+    - isCompleted
+    - title
+    type: object
+  dto.UpdateTaskListDto:
+    properties:
+      title:
+        maxLength: 255
+        minLength: 3
+        type: string
+    required:
+    - title
+    type: object
+  dto.UpdateUserDto:
+    properties:
+      email:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 3
+        type: string
+    type: object
+  dto.UpdateUserPasswordDto:
+    properties:
+      newPassword:
+        maxLength: 100
+        minLength: 6
+        type: string
+      oldPassword:
+        type: string
+    required:
+    - newPassword
+    - oldPassword
+    type: object
+  dto.UserProfileDto:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: Simple Todo App with JWT authentication
+  title: Primeskills Test API Documentation
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      description: Login
+      parameters:
+      - description: login request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TokenDto'
+      summary: Login
+      tags:
+      - auth
+  /auth/register:
+    post:
+      description: Register
+      parameters:
+      - description: register request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TokenDto'
+      summary: Register
+      tags:
+      - auth
+  /task-lists:
+    get:
+      description: Find my task lists
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.TaskListDto'
+            type: array
+      security:
+      - Bearer: []
+      summary: Find my task lists
+      tags:
+      - task-list
+    post:
+      description: Create task list
+      parameters:
+      - description: Create task list
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTaskListDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TaskListDto'
+      security:
+      - Bearer: []
+      summary: Create task list
+      tags:
+      - task-list
+  /task-lists/{id}:
+    delete:
+      description: Delete task list
+      parameters:
+      - description: Task list ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ResponseDto'
+      security:
+      - Bearer: []
+      summary: Delete task list
+      tags:
+      - task-list
+    put:
+      description: Update task list
+      parameters:
+      - description: Task list ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update task list
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateTaskListDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ResponseDto'
+      security:
+      - Bearer: []
+      summary: Update task list
+      tags:
+      - task-list
+  /tasks:
+    post:
+      description: Create new task
+      parameters:
+      - description: Create task
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTaskDto'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.TaskDto'
+      security:
+      - Bearer: []
+      summary: Create task
+      tags:
+      - task
+  /tasks/{id}:
+    delete:
+      description: Delete task
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ResponseDto'
+      security:
+      - Bearer: []
+      summary: Delete task
+      tags:
+      - task
+    put:
+      description: Update task
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update task
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateTaskDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ResponseDto'
+      security:
+      - Bearer: []
+      summary: Update task
+      tags:
+      - task
+  /users:
+    put:
+      description: Update current login user profile
+      parameters:
+      - description: Update user profile
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUserDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ResponseDto'
+      security:
+      - Bearer: []
+      summary: Update user profile
+      tags:
+      - user
+  /users/my-profile:
+    get:
+      description: Get current login user profile
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserProfileDto'
+      security:
+      - Bearer: []
+      summary: Get my profile
+      tags:
+      - user
+  /users/password:
+    put:
+      description: Update current login user password
+      parameters:
+      - description: Update user password
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUserPasswordDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ResponseDto'
+      security:
+      - Bearer: []
+      summary: Update user password
+      tags:
+      - user
+produces:
+- application/json
+schemes:
+- http
+- https
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
