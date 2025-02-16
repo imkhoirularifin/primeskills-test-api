@@ -26,10 +26,16 @@ func Run() {
 	// disable gin's startup message
 	gin.DefaultWriter = io.Discard
 
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
+	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	corsConfig.AllowCredentials = true
+
 	app := gin.New()
 
 	app.Use(gin.Recovery())
-	app.Use(cors.Default())
+	app.Use(cors.New(corsConfig))
 	app.Use(middleware.Zerolog(logger))
 	app.Use(middleware.HandleError())
 

@@ -17,6 +17,8 @@ type Config struct {
 	IsDevelopment bool      `env:"IS_DEVELOPMENT" envDefault:"true"`
 	Database      Database  `envPrefix:"DB_"`
 	Jwt           JwtConfig `envPrefix:"JWT_"`
+	Goose         Goose     `envPrefix:"GOOSE_"`
+	Swagger       Swagger   `envPrefix:"SWAGGER_"`
 }
 
 type Database struct {
@@ -35,6 +37,10 @@ type Goose struct {
 	Driver       string `env:"DRIVER"`
 	DbString     string `env:"DBSTRING"`
 	MigrationDir string `env:"MIGRATION_DIR" envDefault:"./migrations"`
+}
+
+type Swagger struct {
+	Host string `env:"HOST" envDefault:"localhost:3000"`
 }
 
 func Setup() {

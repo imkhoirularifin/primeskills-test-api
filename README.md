@@ -100,6 +100,7 @@ Simple Todo App API built with Golang and Gin.
    | `GOOSE_DRIVER`        | Database driver for goose migration | No       |                   |
    | `GOOSE_DBSTRING`      | Database connection url             | No       |                   |
    | `GOOSE_MIGRATION_DIR` | Output migration dir                | No       | `./migrations`    |
+   | `SWAGGER_HOST`        | Swagger Host                        | No       | `localhost:3000`  |
 
 3. Update these values based on your setup (e.g., database credentials).
 
