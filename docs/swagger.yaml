@@ -154,7 +154,6 @@ definitions:
       name:
         type: string
     type: object
-host: localhost:3000
 info:
   contact: {}
   description: Simple Todo App with JWT authentication

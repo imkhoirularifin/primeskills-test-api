@@ -9,7 +9,6 @@ import (
 //	@version		1.0
 //	@description	Simple Todo App with JWT authentication
 
-//	@host		localhost:3000
 //	@BasePath	/api/v1
 //	@schemes	http https
 
