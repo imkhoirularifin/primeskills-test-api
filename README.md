@@ -34,7 +34,7 @@ Simple Todo App API built with Golang and Gin.
 │   │   ├── gin.go
 │   │   └── gorm.go
 │   ├── interfaces/
-│   │   └── user.go
+│   │   └── user.interface.go
 │   ├── middleware/
 │   │   └── auth.go
 │   ├── user/
