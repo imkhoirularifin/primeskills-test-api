@@ -12,6 +12,7 @@ import (
 	"primeskills-test-api/internal/user"
 	"primeskills-test-api/pkg/xlogger"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,6 +29,7 @@ func Run() {
 	app := gin.New()
 
 	app.Use(gin.Recovery())
+	app.Use(cors.Default())
 	app.Use(middleware.Zerolog(logger))
 	app.Use(middleware.HandleError())
 
