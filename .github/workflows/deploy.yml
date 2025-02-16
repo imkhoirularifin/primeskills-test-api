@@ -1,0 +1,52 @@
+name: Continuous Integration and Deployment
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: .
+          file: ./Dockerfile
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/primeskills-test-api:latest
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add VPS to known_hosts
+        run: |
+          ssh-keyscan -H ${{secrets.SERVER_IP}} >> ~/.ssh/known_hosts
+
+      - name: SSH into VPS, Pull Image, and Deploy
+        run: |
+          ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_IP}} << 'EOF'
+            cd /srv/primeskills
+
+            sudo docker image pull ${{ secrets.DOCKERHUB_USERNAME }}/primeskills-test-api:latest
+
+            sudo docker compose up -d
+
+            sudo docker image prune -a -f
+          EOF
