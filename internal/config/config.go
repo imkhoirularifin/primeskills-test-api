@@ -12,7 +12,7 @@ var (
 )
 
 type Config struct {
-	Host          string    `env:"HOST" envDefault:"localhost"`
+	Host          string    `env:"HOST" envDefault:"0.0.0.0"`
 	Port          int       `env:"PORT" envDefault:"3000"`
 	IsDevelopment bool      `env:"IS_DEVELOPMENT" envDefault:"true"`
 	Database      Database  `envPrefix:"DB_"`
