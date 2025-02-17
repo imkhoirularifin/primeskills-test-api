@@ -13,10 +13,7 @@ import (
 func GenerateToken(user *entity.User) (*string, error) {
 	cfg := config.Cfg
 
-	privateKey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(cfg.Jwt.PrivateKey))
-	if err != nil {
-		return nil, errors.New("failed to parse private key: " + err.Error())
-	}
+	secretKey := []byte(cfg.Jwt.SecretKey)
 
 	claims := entity.JwtTokenClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -29,7 +26,7 @@ func GenerateToken(user *entity.User) (*string, error) {
 		Email: user.Email,
 	}
 
-	token, err := jwt.NewWithClaims(jwt.SigningMethodRS256, claims).SignedString(privateKey)
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString(secretKey)
 	if err != nil {
 		return nil, err
 	}
@@ -40,13 +37,10 @@ func GenerateToken(user *entity.User) (*string, error) {
 func VerifyToken(tokenString string) (*entity.JwtTokenClaims, error) {
 	cfg := config.Cfg
 
-	publicKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(cfg.Jwt.PublicKey))
-	if err != nil {
-		return nil, err
-	}
+	secretKey := []byte(cfg.Jwt.SecretKey)
 
 	token, err := jwt.ParseWithClaims(tokenString, &entity.JwtTokenClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return publicKey, nil
+		return secretKey, nil
 	})
 	if err != nil {
 		return nil, err

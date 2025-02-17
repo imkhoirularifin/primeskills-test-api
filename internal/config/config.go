@@ -27,10 +27,9 @@ type Database struct {
 }
 
 type JwtConfig struct {
-	PrivateKey string        `env:"PRIVATE_KEY,notEmpty"`
-	PublicKey  string        `env:"PUBLIC_KEY,notEmpty"`
-	ExpiresIn  time.Duration `env:"EXPIRES_IN" envDefault:"24h"`
-	Issuer     string        `env:"ISSUER" envDefault:"localhost"`
+	SecretKey string        `env:"SECRET_KEY,notEmpty"`
+	ExpiresIn time.Duration `env:"EXPIRES_IN" envDefault:"24h"`
+	Issuer    string        `env:"ISSUER" envDefault:"localhost"`
 }
 
 type Goose struct {
