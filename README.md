@@ -93,8 +93,7 @@ Simple Todo App API built with Golang and Gin.
    | `IS_DEVELOPMENT`      | Application status                  | No       | `true`            |
    | `DB_DRIVER`           | Database Driver                     | No       | `sqlite`          |
    | `DB_DSN`              | Database Connection URL             | No       | `fiile::memory:?` |
-   | `JWT_PRIVATE_KEY`     | JWT private key                     | Yes      |                   |
-   | `JWT_PUBLIC_KEY`      | JWT public key                      | Yes      |                   |
+   | `JWT_SECRET_KEY`      | JWT secret key                      | Yes      |                   |
    | `JWT_EXPIRES_IN`      | JWT expire duration                 | No       | `24h`             |
    | `JWT_ISSUER`          | JWT issuer                          | No       | `localhost`       |
    | `GOOSE_DRIVER`        | Database driver for goose migration | No       |                   |
