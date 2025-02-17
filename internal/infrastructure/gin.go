@@ -23,8 +23,6 @@ func Run() {
 	if !cfg.IsDevelopment {
 		gin.SetMode(gin.ReleaseMode)
 		swaggerDocs.SwaggerInfo.Schemes = []string{"https"}
-	} else {
-		swaggerDocs.SwaggerInfo.Schemes = []string{"http", "https"}
 	}
 
 	swaggerDocs.SwaggerInfo.Host = cfg.Swagger.Host
