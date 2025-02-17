@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	swaggerDocs "primeskills-test-api/docs"
 	"primeskills-test-api/internal/auth"
 	"primeskills-test-api/internal/docs"
 	"primeskills-test-api/internal/middleware"
@@ -21,7 +22,12 @@ func Run() {
 
 	if !cfg.IsDevelopment {
 		gin.SetMode(gin.ReleaseMode)
+		swaggerDocs.SwaggerInfo.Schemes = []string{"https"}
+	} else {
+		swaggerDocs.SwaggerInfo.Schemes = []string{"http", "https"}
 	}
+
+	swaggerDocs.SwaggerInfo.Host = cfg.Swagger.Host
 
 	// disable gin's startup message
 	gin.DefaultWriter = io.Discard
