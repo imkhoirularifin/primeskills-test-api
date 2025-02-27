@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"primeskills-test-api/internal/auth"
 	"primeskills-test-api/internal/config"
-	"primeskills-test-api/internal/interfaces"
+	"primeskills-test-api/internal/domain/interfaces"
 	"primeskills-test-api/internal/task"
 	tasklist "primeskills-test-api/internal/task_list"
 	"primeskills-test-api/internal/user"

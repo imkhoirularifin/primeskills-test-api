@@ -2,9 +2,9 @@ package user
 
 import (
 	"net/http"
-	"primeskills-test-api/internal/dto"
-	"primeskills-test-api/internal/entity"
-	"primeskills-test-api/internal/interfaces"
+	"primeskills-test-api/internal/domain/dto"
+	"primeskills-test-api/internal/domain/entity"
+	"primeskills-test-api/internal/domain/interfaces"
 	"primeskills-test-api/internal/utilities"
 	"primeskills-test-api/pkg/xerrors"
 

@@ -6,7 +6,9 @@ import (
 	"net/http"
 	swaggerDocs "primeskills-test-api/docs"
 	"primeskills-test-api/internal/auth"
+	"primeskills-test-api/internal/config"
 	"primeskills-test-api/internal/docs"
+	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/middleware"
 	"primeskills-test-api/internal/task"
 	tasklist "primeskills-test-api/internal/task_list"
@@ -24,28 +26,20 @@ func Run() {
 		gin.SetMode(gin.ReleaseMode)
 		swaggerDocs.SwaggerInfo.Schemes = []string{"https"}
 	}
-
 	swaggerDocs.SwaggerInfo.Host = cfg.Swagger.Host
 
-	// disable gin's startup message
+	// disable gin startup message
 	gin.DefaultWriter = io.Discard
 
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowAllOrigins = true
-	corsConfig.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
-	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-	corsConfig.AllowCredentials = true
-
 	app := gin.New()
-
 	app.Use(gin.Recovery())
-	app.Use(cors.New(corsConfig))
+	app.Use(cors.New(config.CorsConfig))
 	app.Use(middleware.Zerolog(logger))
 	app.Use(middleware.HandleError())
 
 	app.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
+		c.JSON(http.StatusOK, &dto.ResponseDto{
+			Message: "pong",
 		})
 	})
 
