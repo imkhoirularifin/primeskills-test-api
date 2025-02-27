@@ -25,16 +25,19 @@ Simple Todo App API built with Golang and Gin.
 ├── internal/
 │   ├── config/
 │   │   └── config.go
-│   ├── dto/
-│   │   └── user.dto.go
-│   ├── entity/
-│   │   └── user.entity.go
+│   ├── docs/
+│   │   └── docs.controller.go
+│   ├── domain/
+│   │   ├── dto/
+│   │   │   └── user.dto.go
+│   │   ├── entity/
+│   │   │   └── user.entity.go
+│   │   └── interfaces/
+│   │       └── user.interface.go
 │   ├── infrastructure/
 │   │   ├── container.go
 │   │   ├── gin.go
 │   │   └── gorm.go
-│   ├── interfaces/
-│   │   └── user.interface.go
 │   ├── middleware/
 │   │   └── auth.go
 │   ├── user/
