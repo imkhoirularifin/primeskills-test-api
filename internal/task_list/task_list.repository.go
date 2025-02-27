@@ -1,8 +1,8 @@
 package tasklist
 
 import (
-	"primeskills-test-api/internal/entity"
-	"primeskills-test-api/internal/interfaces"
+	"primeskills-test-api/internal/domain/entity"
+	"primeskills-test-api/internal/domain/interfaces"
 
 	"gorm.io/gorm"
 )

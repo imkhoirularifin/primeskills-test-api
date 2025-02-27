@@ -1,8 +1,8 @@
 package interfaces
 
 import (
-	"primeskills-test-api/internal/dto"
-	"primeskills-test-api/internal/entity"
+	"primeskills-test-api/internal/domain/dto"
+	"primeskills-test-api/internal/domain/entity"
 
 	"github.com/gin-gonic/gin"
 )

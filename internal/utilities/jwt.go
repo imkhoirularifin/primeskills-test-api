@@ -3,7 +3,7 @@ package utilities
 import (
 	"errors"
 	"primeskills-test-api/internal/config"
-	"primeskills-test-api/internal/entity"
+	"primeskills-test-api/internal/domain/entity"
 	"time"
 
 	"github.com/gin-gonic/gin"

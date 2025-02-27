@@ -2,8 +2,8 @@ package auth
 
 import (
 	"net/http"
-	"primeskills-test-api/internal/dto"
-	"primeskills-test-api/internal/interfaces"
+	"primeskills-test-api/internal/domain/dto"
+	"primeskills-test-api/internal/domain/interfaces"
 	"primeskills-test-api/internal/utilities"
 	"primeskills-test-api/pkg/xerrors"
 )
