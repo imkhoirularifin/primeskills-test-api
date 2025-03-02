@@ -14,12 +14,18 @@ func Zerolog(logger *zerolog.Logger) gin.HandlerFunc {
 		c.Next()
 
 		duration := time.Since(start)
+		statusCode := c.Writer.Status()
+		isError := statusCode >= 400
 
-		logger.Info().
-			Str("method", c.Request.Method).
+		level := logger.Info()
+		if isError {
+			level = logger.Error()
+		}
+
+		level.Str("method", c.Request.Method).
 			Str("url", c.Request.URL.String()).
 			Str("client_ip", c.ClientIP()).
-			Int("status", c.Writer.Status()).
+			Int("status", statusCode).
 			Dur("duration", duration).
 			Msg("HTTP request")
 	}

@@ -4,6 +4,7 @@ import (
 	"primeskills-test-api/internal/auth"
 	"primeskills-test-api/internal/config"
 	"primeskills-test-api/internal/domain/interfaces"
+	"primeskills-test-api/internal/gcloud_storage"
 	"primeskills-test-api/internal/task"
 	tasklist "primeskills-test-api/internal/task_list"
 	"primeskills-test-api/internal/user"
@@ -19,10 +20,11 @@ var (
 	taskListRepository interfaces.TaskListRepository
 	taskRepository     interfaces.TaskRepository
 
-	userService     interfaces.UserService
-	authService     interfaces.AuthService
-	taskListService interfaces.TaskListService
-	taskService     interfaces.TaskService
+	userService          interfaces.UserService
+	authService          interfaces.AuthService
+	taskListService      interfaces.TaskListService
+	taskService          interfaces.TaskService
+	gcloudStorageService interfaces.GcloudStorageService
 )
 
 func init() {
@@ -40,4 +42,5 @@ func init() {
 	authService = auth.NewService(userRepository, userService)
 	taskService = task.NewService(taskRepository, taskListRepository)
 	taskListService = tasklist.NewService(taskListRepository, taskService)
+	gcloudStorageService = gcloud_storage.NewService()
 }
