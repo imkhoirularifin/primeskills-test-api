@@ -89,20 +89,21 @@ Simple Todo App API built with Golang and Gin.
 1. Create a `.env` file in the root directory of your project.
 2. Add environment variables to the `.env` file based on the following template:
 
-   | Name                  | Description                         | Required | Default           |
-   | --------------------- | ----------------------------------- | -------- | ----------------- |
-   | `HOST`                | Server host                         | No       | `localhost`       |
-   | `PORT`                | Port number for the server          | No       | `3000`            |
-   | `IS_DEVELOPMENT`      | Application status                  | No       | `true`            |
-   | `DB_DRIVER`           | Database Driver                     | No       | `sqlite`          |
-   | `DB_DSN`              | Database Connection URL             | No       | `fiile::memory:?` |
-   | `JWT_SECRET_KEY`      | JWT secret key                      | Yes      |                   |
-   | `JWT_EXPIRES_IN`      | JWT expire duration                 | No       | `24h`             |
-   | `JWT_ISSUER`          | JWT issuer                          | No       | `localhost`       |
-   | `GOOSE_DRIVER`        | Database driver for goose migration | No       |                   |
-   | `GOOSE_DBSTRING`      | Database connection url             | No       |                   |
-   | `GOOSE_MIGRATION_DIR` | Output migration dir                | No       | `./migrations`    |
-   | `SWAGGER_HOST`        | Swagger Host                        | No       | `localhost:3000`  |
+   | Name                             | Description                                            | Required | Default           |
+   |----------------------------------|--------------------------------------------------------|----------|-------------------|
+   | `HOST`                           | Server host                                            | No       | `localhost`       |
+   | `PORT`                           | Port number for the server                             | No       | `3000`            |
+   | `IS_DEVELOPMENT`                 | Application status                                     | No       | `true`            |
+   | `DB_DRIVER`                      | Database Driver                                        | No       | `sqlite`          |
+   | `DB_DSN`                         | Database Connection URL                                | No       | `fiile::memory:?` |
+   | `JWT_SECRET_KEY`                 | JWT secret key                                         | Yes      |                   |
+   | `JWT_EXPIRES_IN`                 | JWT expire duration                                    | No       | `24h`             |
+   | `JWT_ISSUER`                     | JWT issuer                                             | No       | `localhost`       |
+   | `GOOSE_DRIVER`                   | Database driver for goose migration                    | No       |                   |
+   | `GOOSE_DBSTRING`                 | Database connection url                                | No       |                   |
+   | `GOOSE_MIGRATION_DIR`            | Output migration dir                                   | No       | `./migrations`    |
+   | `SWAGGER_HOST`                   | Swagger Host                                           | No       | `localhost:3000`  |
+   | `GOOGLE_APPLICATION_CREDENTIALS` | Google ADC (Application Default Credentials) file path | No       | `""`              |
 
 3. Update these values based on your setup (e.g., database credentials).
 

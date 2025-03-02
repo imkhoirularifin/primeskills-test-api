@@ -19,6 +19,7 @@ type Config struct {
 	Jwt           JwtConfig `envPrefix:"JWT_"`
 	Goose         Goose     `envPrefix:"GOOSE_"`
 	Swagger       Swagger   `envPrefix:"SWAGGER_"`
+	Google        Google    `envPrefix:"GOOGLE_"`
 }
 
 type Database struct {
@@ -40,6 +41,10 @@ type Goose struct {
 
 type Swagger struct {
 	Host string `env:"HOST" envDefault:"localhost:3000"`
+}
+
+type Google struct {
+	ApplicationCredentials string `env:"APPLICATION_CREDENTIALS" envDefault:""`
 }
 
 func Setup() {
