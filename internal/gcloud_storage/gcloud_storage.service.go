@@ -19,13 +19,13 @@ type service struct {
 }
 
 func (s *service) UploadFile(ctx *gin.Context, bucket string, object []byte, objectName string) error {
-	wc := s.storageClient.Bucket(bucket).Object(objectName).NewWriter(ctx)
-	_, err := io.Copy(wc, bytes.NewReader(object))
+	writer := s.storageClient.Bucket(bucket).Object(objectName).NewWriter(ctx)
+	_, err := io.Copy(writer, bytes.NewReader(object))
 	if err != nil {
 		return err
 	}
 
-	if err := wc.Close(); err != nil {
+	if err := writer.Close(); err != nil {
 		return err
 	}
 
@@ -33,14 +33,14 @@ func (s *service) UploadFile(ctx *gin.Context, bucket string, object []byte, obj
 }
 
 func (s *service) DownloadFile(ctx *gin.Context, bucket, objectName string) ([]byte, error) {
-	rc, err := s.storageClient.Bucket(bucket).Object(objectName).NewReader(ctx)
+	reader, err := s.storageClient.Bucket(bucket).Object(objectName).NewReader(ctx)
 	if err != nil {
 		return nil, err
 	}
-	defer rc.Close()
+	defer reader.Close()
 
 	var buf bytes.Buffer
-	if _, err := io.Copy(&buf, rc); err != nil {
+	if _, err := io.Copy(&buf, reader); err != nil {
 		return nil, err
 	}
 
@@ -69,6 +69,15 @@ func (s *service) GenSignedUrl(bucket, objectName string, expire time.Duration) 
 	}
 
 	return signedUrl, nil
+}
+
+func (s *service) GetObjectMetadata(ctx *gin.Context, bucket, objectName string) (*storage.ObjectAttrs, error) {
+	meta, err := s.storageClient.Bucket(bucket).Object(objectName).Attrs(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return meta, nil
 }
 
 func NewService() interfaces.GcloudStorageService {
