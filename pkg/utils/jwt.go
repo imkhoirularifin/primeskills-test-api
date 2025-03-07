@@ -1,15 +1,18 @@
-package utilities
+package utils
 
 import (
 	"errors"
-	"primeskills-test-api/internal/config"
 	"primeskills-test-api/internal/domain/entity"
+	"primeskills-test-api/pkg/config"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// GenerateToken generates a JWT token for a given user.
+// It takes a pointer to an entity.User and returns a pointer to the generated token string and an error if any.
+// The token contains the user's ID, name, email, and other registered claims.
 func GenerateToken(user *entity.User) (*string, error) {
 	cfg := config.Cfg
 
@@ -20,7 +23,7 @@ func GenerateToken(user *entity.User) (*string, error) {
 			Subject:   user.ID,
 			Issuer:    cfg.Jwt.Issuer,
 			IssuedAt:  jwt.NewNumericDate(time.Now().UTC()),
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(cfg.Jwt.ExpiresIn))),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(cfg.Jwt.ExpiresIn)),
 		},
 		Name:  user.Name,
 		Email: user.Email,
@@ -34,6 +37,9 @@ func GenerateToken(user *entity.User) (*string, error) {
 	return &token, nil
 }
 
+// VerifyToken verifies a JWT token string and returns the claims if the token is valid.
+// It takes a token string as input and returns a pointer to the JwtTokenClaims and an error if any.
+// The function checks the token's validity, parses the claims, and verifies the issuer.
 func VerifyToken(tokenString string) (*entity.JwtTokenClaims, error) {
 	cfg := config.Cfg
 
@@ -58,6 +64,9 @@ func VerifyToken(tokenString string) (*entity.JwtTokenClaims, error) {
 	return claims, nil
 }
 
+// ExtractClaims extracts the JWT claims from the Gin context.
+// It takes a Gin context as input and returns a pointer to the JwtTokenClaims if they exist in the context.
+// If the claims do not exist or are of the wrong type, it returns nil.
 func ExtractClaims(ctx *gin.Context) *entity.JwtTokenClaims {
 	claims, exist := ctx.Get("claims")
 	if !exist {

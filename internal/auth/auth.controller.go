@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/interfaces"
-	"primeskills-test-api/internal/middleware"
-	"primeskills-test-api/internal/utilities"
+	"primeskills-test-api/pkg/middleware"
+	"primeskills-test-api/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,7 +32,7 @@ func NewController(router *gin.RouterGroup, authService interfaces.AuthService) 
 //	@Success		200		{object}	dto.TokenDto
 //	@Router			/auth/login [post]
 func (c *controller) login(ctx *gin.Context) {
-	req := utilities.ExtractStructFromValidator[dto.LoginDto](ctx)
+	req := utils.ExtractStructFromValidator[dto.LoginDto](ctx)
 
 	token, err := c.authService.Login(req)
 	if err != nil {
@@ -55,7 +55,7 @@ func (c *controller) login(ctx *gin.Context) {
 //	@Success		200		{object}	dto.TokenDto
 //	@Router			/auth/register [post]
 func (c *controller) register(ctx *gin.Context) {
-	req := utilities.ExtractStructFromValidator[dto.RegisterDto](ctx)
+	req := utils.ExtractStructFromValidator[dto.RegisterDto](ctx)
 
 	token, err := c.authService.Register(req)
 	if err != nil {

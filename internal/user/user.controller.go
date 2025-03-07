@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/interfaces"
-	"primeskills-test-api/internal/middleware"
-	"primeskills-test-api/internal/utilities"
+	middleware2 "primeskills-test-api/pkg/middleware"
+	"primeskills-test-api/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,11 +19,11 @@ func NewController(router *gin.RouterGroup, userService interfaces.UserService) 
 		userService: userService,
 	}
 
-	protected := router.Group("/", middleware.RequireToken())
+	protected := router.Group("/", middleware2.RequireToken())
 
 	protected.GET("/my-profile", controller.getMyProfile)
-	protected.PUT("/", middleware.Validate[dto.UpdateUserDto](), controller.update)
-	protected.PUT("/password", middleware.Validate[dto.UpdateUserPasswordDto](), controller.updatePassword)
+	protected.PUT("/", middleware2.Validate[dto.UpdateUserDto](), controller.update)
+	protected.PUT("/password", middleware2.Validate[dto.UpdateUserPasswordDto](), controller.updatePassword)
 }
 
 // Get my profile godoc
@@ -57,7 +57,7 @@ func (c *controller) getMyProfile(ctx *gin.Context) {
 //	@Success		200		{object}	dto.ResponseDto
 //	@Router			/users [put]
 func (c *controller) update(ctx *gin.Context) {
-	req := utilities.ExtractStructFromValidator[dto.UpdateUserDto](ctx)
+	req := utils.ExtractStructFromValidator[dto.UpdateUserDto](ctx)
 
 	err := c.userService.Update(ctx, req)
 	if err != nil {
@@ -80,7 +80,7 @@ func (c *controller) update(ctx *gin.Context) {
 //	@Success		200		{object}	dto.ResponseDto
 //	@Router			/users/password [put]
 func (c *controller) updatePassword(ctx *gin.Context) {
-	req := utilities.ExtractStructFromValidator[dto.UpdateUserPasswordDto](ctx)
+	req := utils.ExtractStructFromValidator[dto.UpdateUserPasswordDto](ctx)
 
 	err := c.userService.UpdatePassword(ctx, req)
 	if err != nil {

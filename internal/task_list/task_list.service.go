@@ -4,8 +4,8 @@ import (
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/entity"
 	"primeskills-test-api/internal/domain/interfaces"
-	"primeskills-test-api/internal/utilities"
 	"primeskills-test-api/pkg/exception"
+	"primeskills-test-api/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +20,7 @@ type taskListRelation struct {
 }
 
 func (s *service) Create(ctx *gin.Context, req *dto.CreateTaskListDto) (*dto.TaskListDto, error) {
-	claims := utilities.ExtractClaims(ctx)
+	claims := utils.ExtractClaims(ctx)
 
 	taskList := &entity.TaskList{
 		UserID: claims.Subject,
@@ -42,7 +42,7 @@ func (s *service) Create(ctx *gin.Context, req *dto.CreateTaskListDto) (*dto.Tas
 }
 
 func (s *service) FindByUserId(ctx *gin.Context) (*[]dto.TaskListDto, error) {
-	claims := utilities.ExtractClaims(ctx)
+	claims := utils.ExtractClaims(ctx)
 	taskListDtos := make([]dto.TaskListDto, 0)
 
 	taskLists, _ := s.taskListRepository.FindByUserId(claims.Subject)

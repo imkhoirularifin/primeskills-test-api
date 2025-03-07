@@ -44,7 +44,7 @@ Simple Todo App API built with Golang and Gin.
 │   │   ├── user.controller.go
 │   │   ├── user.repository.go
 │   │   └── user.service.go
-│   └── utilities/
+│   └── utils/
 │       └── validation.go
 ├── migrations/
 │   └── sql_migration.sql

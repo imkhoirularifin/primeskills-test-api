@@ -6,13 +6,13 @@ import (
 	"net/http"
 	swaggerDocs "primeskills-test-api/docs"
 	"primeskills-test-api/internal/auth"
-	"primeskills-test-api/internal/config"
 	"primeskills-test-api/internal/docs"
 	"primeskills-test-api/internal/domain/dto"
-	"primeskills-test-api/internal/middleware"
 	"primeskills-test-api/internal/task"
 	tasklist "primeskills-test-api/internal/task_list"
 	"primeskills-test-api/internal/user"
+	"primeskills-test-api/pkg/config"
+	middleware2 "primeskills-test-api/pkg/middleware"
 	"primeskills-test-api/pkg/xlogger"
 
 	"github.com/gin-contrib/cors"
@@ -34,8 +34,8 @@ func Run() {
 	app := gin.New()
 	app.Use(gin.Recovery())
 	app.Use(cors.New(config.CorsConfig))
-	app.Use(middleware.Zerolog(logger))
-	app.Use(middleware.HandleError())
+	app.Use(middleware2.Logger(logger))
+	app.Use(middleware2.HandleError())
 
 	app.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, &dto.ResponseDto{

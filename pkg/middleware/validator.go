@@ -3,13 +3,17 @@ package middleware
 import (
 	"net/http"
 	"primeskills-test-api/internal/domain/dto"
-	"primeskills-test-api/internal/utilities"
+	"primeskills-test-api/pkg/utils"
 	"primeskills-test-api/pkg/xlogger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
+// Validate is a middleware function that validates the request body against a given struct type V.
+// It uses the gin context to bind the request body to the struct and validates it using the go-playground/validator package.
+// If validation fails, it responds with a 400 Bad Request status and an error message.
+// If validation succeeds, it sets the validated struct in the context and proceeds to the next handler.
 func Validate[V any]() gin.HandlerFunc {
 	validate := validator.New(validator.WithRequiredStructEnabled())
 	return func(c *gin.Context) {
@@ -28,7 +32,7 @@ func Validate[V any]() gin.HandlerFunc {
 		if err := validate.Struct(v); err != nil {
 			var errors []string
 			for _, err := range err.(validator.ValidationErrors) {
-				errMsg := utilities.GetValidationErrorMessage(err)
+				errMsg := utils.GetValidationErrorMessage(err)
 				errors = append(errors, errMsg)
 			}
 			c.JSON(http.StatusBadRequest, &dto.ResponseDto{

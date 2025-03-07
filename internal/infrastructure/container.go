@@ -2,12 +2,12 @@ package infrastructure
 
 import (
 	"primeskills-test-api/internal/auth"
-	"primeskills-test-api/internal/config"
 	"primeskills-test-api/internal/domain/interfaces"
 	"primeskills-test-api/internal/gcloud_storage"
 	"primeskills-test-api/internal/task"
 	tasklist "primeskills-test-api/internal/task_list"
 	"primeskills-test-api/internal/user"
+	"primeskills-test-api/pkg/config"
 	"primeskills-test-api/pkg/xlogger"
 
 	_ "github.com/joho/godotenv/autoload"
