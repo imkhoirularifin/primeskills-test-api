@@ -1,8 +1,10 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
-	"primeskills-test-api/pkg/xerrors"
+	"primeskills-test-api/internal/domain/dto"
+	"primeskills-test-api/pkg/exception"
 	"primeskills-test-api/pkg/xlogger"
 
 	"github.com/gin-gonic/gin"
@@ -16,16 +18,18 @@ func HandleError() gin.HandlerFunc {
 		if len(c.Errors) > 0 {
 			err := c.Errors.Last()
 
-			if customError, ok := err.Err.(*xerrors.CustomError); ok {
-				c.JSON(customError.Status, gin.H{
-					"message": customError.Message,
+			var httpException *exception.HTTPException
+			if errors.As(err.Err, &httpException) {
+				c.JSON(httpException.StatusCode, &dto.ResponseDto{
+					Message: httpException.Message,
 				})
 				return
 			}
 
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": "Something went wrong",
+			c.JSON(http.StatusInternalServerError, &dto.ResponseDto{
+				Message: "Something went wrong",
 			})
+
 			logger.Error().Msgf("Error: %v", err.Err)
 		}
 	}

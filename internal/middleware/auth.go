@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/utilities"
 	"strings"
 
@@ -14,8 +15,8 @@ func RequireToken() gin.HandlerFunc {
 		token = strings.TrimPrefix(token, "Bearer ")
 
 		if token == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"message": "Unauthorized",
+			c.JSON(http.StatusUnauthorized, &dto.ResponseDto{
+				Message: "Unauthorized",
 			})
 			c.Abort()
 			return
@@ -23,8 +24,8 @@ func RequireToken() gin.HandlerFunc {
 
 		claims, err := utilities.VerifyToken(token)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{
-				"message": "Unauthorized",
+			c.JSON(http.StatusUnauthorized, &dto.ResponseDto{
+				Message: "Unauthorized",
 			})
 			c.Abort()
 			return

@@ -2,7 +2,8 @@ package middleware
 
 import (
 	"net/http"
-	"primeskills-test-api/pkg/xerrors"
+	"primeskills-test-api/internal/domain/dto"
+	"primeskills-test-api/internal/utilities"
 	"primeskills-test-api/pkg/xlogger"
 
 	"github.com/gin-gonic/gin"
@@ -27,12 +28,12 @@ func Validate[V any]() gin.HandlerFunc {
 		if err := validate.Struct(v); err != nil {
 			var errors []string
 			for _, err := range err.(validator.ValidationErrors) {
-				errMsg := xerrors.GetValidationErrorMessage(err)
+				errMsg := utilities.GetValidationErrorMessage(err)
 				errors = append(errors, errMsg)
 			}
-			c.JSON(http.StatusBadRequest, gin.H{
-				"errors":  errors,
-				"message": "Invalid request",
+			c.JSON(http.StatusBadRequest, &dto.ResponseDto{
+				Errors:  errors,
+				Message: http.StatusText(http.StatusBadRequest),
 			})
 			c.Abort()
 			return
