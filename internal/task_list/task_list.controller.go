@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/interfaces"
-	"primeskills-test-api/internal/middleware"
-	"primeskills-test-api/internal/utilities"
+	middleware2 "primeskills-test-api/pkg/middleware"
+	"primeskills-test-api/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,11 +19,11 @@ func NewController(router *gin.RouterGroup, taskListService interfaces.TaskListS
 		taskListService: taskListService,
 	}
 
-	protected := router.Group("/", middleware.RequireToken())
+	protected := router.Group("/", middleware2.RequireToken())
 
-	protected.POST("/", middleware.Validate[dto.CreateTaskListDto](), controller.create)
+	protected.POST("/", middleware2.Validate[dto.CreateTaskListDto](), controller.create)
 	protected.GET("/", controller.findByUserId)
-	protected.PUT("/:id", middleware.Validate[dto.UpdateTaskListDto](), controller.update)
+	protected.PUT("/:id", middleware2.Validate[dto.UpdateTaskListDto](), controller.update)
 	protected.DELETE("/:id", controller.delete)
 }
 
@@ -37,7 +37,7 @@ func NewController(router *gin.RouterGroup, taskListService interfaces.TaskListS
 //	@Success		200		{object}	dto.TaskListDto
 //	@Router			/task-lists [post]
 func (c *controller) create(ctx *gin.Context) {
-	req := utilities.ExtractStructFromValidator[dto.CreateTaskListDto](ctx)
+	req := utils.ExtractStructFromValidator[dto.CreateTaskListDto](ctx)
 
 	taskListDto, err := c.taskListService.Create(ctx, req)
 	if err != nil {
@@ -84,7 +84,7 @@ func (c *controller) findByUserId(ctx *gin.Context) {
 //	@Router			/task-lists/{id} [put]
 func (c *controller) update(ctx *gin.Context) {
 	id := ctx.Param("id")
-	req := utilities.ExtractStructFromValidator[dto.UpdateTaskListDto](ctx)
+	req := utils.ExtractStructFromValidator[dto.UpdateTaskListDto](ctx)
 
 	err := c.taskListService.Update(id, req)
 	if err != nil {

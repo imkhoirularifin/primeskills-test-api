@@ -3,8 +3,8 @@ package auth
 import (
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/interfaces"
-	"primeskills-test-api/internal/utilities"
 	"primeskills-test-api/pkg/exception"
+	utils2 "primeskills-test-api/pkg/utils"
 )
 
 type service struct {
@@ -27,7 +27,7 @@ func (s *service) Register(req *dto.RegisterDto) (*dto.TokenDto, error) {
 		return nil, err
 	}
 
-	token, err := utilities.GenerateToken(user)
+	token, err := utils2.GenerateToken(user)
 	if err != nil {
 		return nil, err
 	}
@@ -43,12 +43,12 @@ func (s *service) Login(req *dto.LoginDto) (*dto.TokenDto, error) {
 		return nil, exception.Unauthorized("")
 	}
 
-	err = utilities.ComparePassword(req.Password, user.Password)
+	err = utils2.ComparePassword(req.Password, user.Password)
 	if err != nil {
 		return nil, exception.Unauthorized("")
 	}
 
-	token, err := utilities.GenerateToken(user)
+	token, err := utils2.GenerateToken(user)
 	if err != nil {
 		return nil, err
 	}

@@ -4,8 +4,8 @@ import (
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/entity"
 	"primeskills-test-api/internal/domain/interfaces"
-	"primeskills-test-api/internal/utilities"
 	"primeskills-test-api/pkg/exception"
+	utils2 "primeskills-test-api/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +20,7 @@ func (s *service) Create(req dto.CreateUserDto) error {
 		return exception.Conflict("Email already exists")
 	}
 
-	hashedPassword, err := utilities.HashPassword(req.Password)
+	hashedPassword, err := utils2.HashPassword(req.Password)
 	if err != nil {
 		return err
 	}
@@ -35,7 +35,7 @@ func (s *service) Create(req dto.CreateUserDto) error {
 }
 
 func (s *service) FindUserProfile(ctx *gin.Context) (*dto.UserProfileDto, error) {
-	claims := utilities.ExtractClaims(ctx)
+	claims := utils2.ExtractClaims(ctx)
 
 	user, err := s.userRepository.FindById(claims.Subject)
 	if err != nil {
@@ -50,7 +50,7 @@ func (s *service) FindUserProfile(ctx *gin.Context) (*dto.UserProfileDto, error)
 }
 
 func (s *service) Update(ctx *gin.Context, req *dto.UpdateUserDto) error {
-	claims := utilities.ExtractClaims(ctx)
+	claims := utils2.ExtractClaims(ctx)
 
 	existingUser, err := s.userRepository.FindById(claims.Subject)
 	if err != nil {
@@ -72,19 +72,19 @@ func (s *service) Update(ctx *gin.Context, req *dto.UpdateUserDto) error {
 }
 
 func (s *service) UpdatePassword(ctx *gin.Context, req *dto.UpdateUserPasswordDto) error {
-	claims := utilities.ExtractClaims(ctx)
+	claims := utils2.ExtractClaims(ctx)
 
 	user, err := s.userRepository.FindById(claims.Subject)
 	if err != nil {
 		return exception.Unauthorized("")
 	}
 
-	err = utilities.ComparePassword(req.OldPassword, user.Password)
+	err = utils2.ComparePassword(req.OldPassword, user.Password)
 	if err != nil {
 		return exception.Unauthorized("Invalid old password")
 	}
 
-	hashedPassword, err := utilities.HashPassword(req.NewPassword)
+	hashedPassword, err := utils2.HashPassword(req.NewPassword)
 	if err != nil {
 		return err
 	}

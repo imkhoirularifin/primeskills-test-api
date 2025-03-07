@@ -4,6 +4,7 @@ import (
 	"net/http"
 )
 
+// HTTPException represents an HTTP error with a status code and message.
 type HTTPException struct {
 	StatusCode int    `json:"statusCode"`
 	Message    string `json:"message"`

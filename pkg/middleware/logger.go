@@ -7,7 +7,10 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func Zerolog(logger *zerolog.Logger) gin.HandlerFunc {
+// Logger returns a gin.HandlerFunc that logs HTTP requests using zerolog.
+// It logs the method, URL, client IP, status code, and duration of each request.
+// If the status code is 400 or higher, it logs the request as an error.
+func Logger(logger *zerolog.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
 
