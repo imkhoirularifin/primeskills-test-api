@@ -1,11 +1,10 @@
 package task
 
 import (
-	"net/http"
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/entity"
 	"primeskills-test-api/internal/domain/interfaces"
-	"primeskills-test-api/pkg/xerrors"
+	"primeskills-test-api/pkg/exception"
 )
 
 type service struct {
@@ -16,7 +15,7 @@ type service struct {
 func (s *service) Create(req *dto.CreateTaskDto) (*dto.TaskDto, error) {
 	_, err := s.taskListRepository.FindById(req.TaskListID)
 	if err != nil {
-		return nil, xerrors.Throw(http.StatusNotFound, "Task list not found")
+		return nil, exception.NotFound("Task list not found")
 	}
 
 	task := &entity.Task{
@@ -58,7 +57,7 @@ func (s *service) FindMapByTaskListIds(taskListIds []string) (map[string][]dto.T
 func (s *service) Update(id string, req *dto.UpdateTaskDto) error {
 	task, err := s.taskRepository.FindById(id)
 	if err != nil {
-		return xerrors.Throw(http.StatusNotFound, "task not found")
+		return exception.NotFound("Task not found")
 	}
 
 	task.Title = req.Title
@@ -76,7 +75,7 @@ func (s *service) Update(id string, req *dto.UpdateTaskDto) error {
 func (s *service) Delete(id string) error {
 	task, err := s.taskRepository.FindById(id)
 	if err != nil {
-		return xerrors.Throw(http.StatusNotFound, "task not found")
+		return exception.NotFound("Task not found")
 	}
 
 	err = s.taskRepository.Delete(task)

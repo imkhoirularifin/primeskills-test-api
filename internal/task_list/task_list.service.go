@@ -1,12 +1,11 @@
 package tasklist
 
 import (
-	"net/http"
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/entity"
 	"primeskills-test-api/internal/domain/interfaces"
 	"primeskills-test-api/internal/utilities"
-	"primeskills-test-api/pkg/xerrors"
+	"primeskills-test-api/pkg/exception"
 
 	"github.com/gin-gonic/gin"
 )
@@ -44,20 +43,17 @@ func (s *service) Create(ctx *gin.Context, req *dto.CreateTaskListDto) (*dto.Tas
 
 func (s *service) FindByUserId(ctx *gin.Context) (*[]dto.TaskListDto, error) {
 	claims := utilities.ExtractClaims(ctx)
+	taskListDtos := make([]dto.TaskListDto, 0)
 
-	taskLists, err := s.taskListRepository.FindByUserId(claims.Subject)
-	if err != nil {
-		return nil, xerrors.Throw(http.StatusNotFound, "task list not found")
-	}
+	taskLists, _ := s.taskListRepository.FindByUserId(claims.Subject)
 
 	mapRelation := s.findTaskListsRelation(taskLists)
-	taskListDtos := make([]dto.TaskListDto, 0)
 
 	for _, taskList := range *taskLists {
 		relation := mapRelation[taskList.ID]
-		dto := taskListEntityToDto(&taskList, relation)
+		taskListDto := taskListEntityToDto(&taskList, relation)
 
-		taskListDtos = append(taskListDtos, *dto)
+		taskListDtos = append(taskListDtos, *taskListDto)
 	}
 
 	return &taskListDtos, nil
@@ -66,7 +62,7 @@ func (s *service) FindByUserId(ctx *gin.Context) (*[]dto.TaskListDto, error) {
 func (s *service) Update(id string, req *dto.UpdateTaskListDto) error {
 	taskList, err := s.taskListRepository.FindById(id)
 	if err != nil {
-		return xerrors.Throw(http.StatusNotFound, "task list not found")
+		return exception.NotFound("")
 	}
 
 	taskList.Title = req.Title
@@ -76,7 +72,7 @@ func (s *service) Update(id string, req *dto.UpdateTaskListDto) error {
 func (s *service) Delete(id string) error {
 	taskList, err := s.taskListRepository.FindById(id)
 	if err != nil {
-		return xerrors.Throw(http.StatusNotFound, "task list not found")
+		return exception.NotFound("")
 	}
 
 	return s.taskListRepository.Delete(taskList)

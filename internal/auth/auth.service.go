@@ -1,11 +1,10 @@
 package auth
 
 import (
-	"net/http"
 	"primeskills-test-api/internal/domain/dto"
 	"primeskills-test-api/internal/domain/interfaces"
 	"primeskills-test-api/internal/utilities"
-	"primeskills-test-api/pkg/xerrors"
+	"primeskills-test-api/pkg/exception"
 )
 
 type service struct {
@@ -41,12 +40,12 @@ func (s *service) Register(req *dto.RegisterDto) (*dto.TokenDto, error) {
 func (s *service) Login(req *dto.LoginDto) (*dto.TokenDto, error) {
 	user, err := s.userRepository.FindByEmail(req.Email)
 	if err != nil {
-		return nil, xerrors.Throw(http.StatusUnauthorized, "invalid credentials")
+		return nil, exception.Unauthorized("")
 	}
 
 	err = utilities.ComparePassword(req.Password, user.Password)
 	if err != nil {
-		return nil, xerrors.Throw(http.StatusUnauthorized, "invalid credentials")
+		return nil, exception.Unauthorized("")
 	}
 
 	token, err := utilities.GenerateToken(user)

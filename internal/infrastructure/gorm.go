@@ -11,20 +11,20 @@ var db *gorm.DB
 
 func dbSetup() {
 	var err error
-	logger := logger.Default.LogMode(logger.Silent)
+	logMode := logger.Default.LogMode(logger.Silent)
 
 	switch cfg.Database.Driver {
 	case "sqlite":
 		db, err = gorm.Open(sqlite.New(sqlite.Config{
 			DSN: cfg.Database.Dsn,
 		}), &gorm.Config{
-			Logger: logger,
+			Logger: logMode,
 		})
 	case "mysql":
 		db, err = gorm.Open(mysql.New(mysql.Config{
 			DSN: cfg.Database.Dsn,
 		}), &gorm.Config{
-			Logger: logger,
+			Logger: logMode,
 		})
 	default:
 		panic("Database driver not supported")
