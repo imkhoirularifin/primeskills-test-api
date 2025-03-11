@@ -31,19 +31,19 @@ func Run() {
 	// disable gin startup message
 	gin.DefaultWriter = io.Discard
 
-	app := gin.New()
-	app.Use(gin.Recovery())
-	app.Use(cors.New(config.CorsConfig))
-	app.Use(middleware2.Logger(logger))
-	app.Use(middleware2.HandleError())
+	engine := gin.New()
+	engine.Use(gin.Recovery())
+	engine.Use(cors.New(config.CorsConfig))
+	engine.Use(middleware2.Logger(logger))
+	engine.Use(middleware2.HandleError())
 
-	app.GET("/ping", func(c *gin.Context) {
+	engine.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, &dto.ResponseDto{
 			Message: "pong",
 		})
 	})
 
-	api := app.Group("/api/v1")
+	api := engine.Group("/api/v1")
 	docs.NewController(api.Group("/docs"))
 	auth.NewController(api.Group("/auth"), authService)
 	user.NewController(api.Group("/users"), userService)
@@ -53,7 +53,7 @@ func Run() {
 	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 	logger.Info().Msgf("Server is running on address: %s", addr)
 
-	err := app.Run(addr)
+	err := engine.Run(addr)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("Server failed to start")
 	}

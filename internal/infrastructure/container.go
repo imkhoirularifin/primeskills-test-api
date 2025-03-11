@@ -8,6 +8,7 @@ import (
 	tasklist "primeskills-test-api/internal/task_list"
 	"primeskills-test-api/internal/user"
 	"primeskills-test-api/pkg/config"
+	"primeskills-test-api/pkg/midtrans/midtrans_subscription"
 	"primeskills-test-api/pkg/xlogger"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -20,11 +21,12 @@ var (
 	taskListRepository interfaces.TaskListRepository
 	taskRepository     interfaces.TaskRepository
 
-	userService          interfaces.UserService
-	authService          interfaces.AuthService
-	taskListService      interfaces.TaskListService
-	taskService          interfaces.TaskService
-	gcloudStorageService interfaces.GcloudStorageService
+	userService                 interfaces.UserService
+	authService                 interfaces.AuthService
+	taskListService             interfaces.TaskListService
+	taskService                 interfaces.TaskService
+	gcloudStorageService        interfaces.GcloudStorageService
+	midtransSubscriptionService midtrans_subscription.IMidtransSubscriptionService
 )
 
 func init() {
@@ -43,4 +45,5 @@ func init() {
 	taskService = task.NewService(taskRepository, taskListRepository)
 	taskListService = tasklist.NewService(taskListRepository, taskService)
 	gcloudStorageService = gcloud_storage.NewService()
+	midtransSubscriptionService = midtrans_subscription.NewService()
 }

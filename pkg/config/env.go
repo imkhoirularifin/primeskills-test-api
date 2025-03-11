@@ -20,6 +20,7 @@ type Config struct {
 	Goose         Goose     `envPrefix:"GOOSE_"`
 	Swagger       Swagger   `envPrefix:"SWAGGER_"`
 	Google        Google    `envPrefix:"GOOGLE_"`
+	Midtrans      Midtrans  `envPrefix:"MIDTRANS_"`
 }
 
 type Database struct {
@@ -45,6 +46,11 @@ type Swagger struct {
 
 type Google struct {
 	ApplicationCredentials string `env:"APPLICATION_CREDENTIALS" envDefault:""`
+}
+
+type Midtrans struct {
+	BaseUrl   string `env:"BASE_URL,notEmpty"`
+	ServerKey string `env:"SERVER_KEY,notEmpty"`
 }
 
 func Setup() {
