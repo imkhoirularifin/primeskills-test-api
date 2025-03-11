@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/caarlos0/env/v11"
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 var (
@@ -54,10 +54,6 @@ type Midtrans struct {
 }
 
 func Setup() {
-	if err := godotenv.Load(); err != nil {
-		panic(err)
-	}
-
 	if err := env.Parse(&Cfg); err != nil {
 		panic(err)
 	}
